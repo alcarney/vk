@@ -2,17 +2,16 @@ CC = gcc
 CFLAGS = -Wall -Wextra
 LDFLAGS = -lvulkan
 
-SOURCES=$(shell find ./src -name "*.c")
-OBJECTS=$(SOURCES:.c=.o)
+.PHONY: clean default
 
 default: vkdevice
 
-.PHONY: clean
 clean:
 	rm src/*.o bin/*
 
-.cpp.o:
+%.o: %.c
 	$(CC) -c $(CFLAGS) $< -o $@
 
-vkdevice: $(OBJECTS)
-	$(CC) $(LDFLAGS) $(OBJECTS) -o bin/vkdevice
+VKDEVICE = src/vkdevice.o
+vkdevice: $(VKDEVICE)
+	$(CC) $(LDFLAGS) $(VKDEVICE) -o bin/vkdevice
